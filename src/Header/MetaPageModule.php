@@ -2,7 +2,7 @@
 
 namespace ModuledPage\Header;
 
-use Page\Moduled\AbstractModuleHeader;
+use ModuledPage\Page\AbstractModuleHeader;
 
 class MetaPageModule extends AbstractModuleHeader {
 

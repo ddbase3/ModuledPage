@@ -2,7 +2,6 @@
 
 namespace ModuledPage\Page;
 
-use Page\Moduled\AbstractModuledPage;
 use Page\Api\IPageCatchall;
 
 class GeneratedPage extends AbstractModuledPage implements IPageCatchall {

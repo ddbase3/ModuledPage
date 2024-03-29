@@ -2,7 +2,7 @@
 
 namespace ModuledPage\Content;
 
-use Page\Moduled\AbstractModuleContent;
+use ModuledPage\Page\AbstractModuleContent;
 
 class IframeModule extends AbstractModuleContent {
 
