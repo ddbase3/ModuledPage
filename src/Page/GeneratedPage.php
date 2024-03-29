@@ -19,13 +19,7 @@ class GeneratedPage extends AbstractModuledPage implements IPageCatchall {
 		$accesscontrol = $this->servicelocator->get('accesscontrol');
 		$language = $this->servicelocator->get('language');
 
-		$pagecfgfile = rtrim(DIR_LOCAL, DIRECTORY_SEPARATOR) . "/Page/page-" . $_REQUEST["name"] . ".json";
-		if (!file_exists($pagecfgfile)) {
-			header("HTTP/1.0 404 Not Found");
-			die("404 Not Found\n");
-		}
-		$content = file_get_contents($pagecfgfile);
-		$pagecfg = json_decode($content, true);
+		$pagecfg = $this->getPageCfg();
 
 		foreach ($pagecfg["pageheaders"] as $pageheader) {
 			$pagemoduleheader = $this->classmap->getInstanceByInterfaceName("Page\\Api\\IPageModuleHeader", $pageheader["name"]);
@@ -56,4 +50,23 @@ class GeneratedPage extends AbstractModuledPage implements IPageCatchall {
 		return parent::getOutput($out);
 	}
 
+	// Private methods
+
+	private function getPageCfg() {
+		$files = array(rtrim(DIR_LOCAL, DIRECTORY_SEPARATOR) . "/Page/page-" . $_REQUEST["name"] . ".json");
+		foreach ($this->classmap->getPlugins() as $plugin)
+			$files[] = rtrim(DIR_PLUGIN, DIRECTORY_SEPARATOR) . "/" . $plugin . "/local/Page/page-" . $_REQUEST["name"] . ".json";
+		$pagecfgfile = "";
+		foreach ($files as $file) {
+			if (!file_exists($file)) continue;
+			$pagecfgfile = $file;
+			break;
+		}
+		if (empty($pagecfgfile)) {
+			header("HTTP/1.0 404 Not Found");
+			die("404 Not Found\n");
+		}
+		$content = file_get_contents($pagecfgfile);
+		return json_decode($content, true);
+	}
 }
