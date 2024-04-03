@@ -51,14 +51,17 @@ abstract class AbstractModuledPage implements IPage {
 		$this->view->setPath(DIR_PLUGIN . 'ModuledPage');
 		$this->view->setTemplate('Page/Page.php');
 
-		$privacy = $this->statushandler->get('privacy');
-		if (is_null($privacy)) $privacy = 50;
+		$privacy = 50;
+		if ($this->statushandler) {
+			$privacy = $this->statushandler->get('privacy');
+			if (is_null($privacy)) $privacy = 50;
+		}
 		$this->view->assign("privacy", intval($privacy));
 
 		$this->view->assign('title', $this->title);
 		$this->view->assign('headhtml', $this->getHeadHtml());
 		$this->view->assign('bodyhtml', $this->getBodyHtml());
-		$this->view->assign('language', $this->language->getLanguage());
+		$this->view->assign('language', $this->language ? $this->language->getLanguage() : null);
 
 		return $this->view->loadTemplate();
 	}
