@@ -3,13 +3,14 @@
 namespace ModuledPage;
 
 use Api\IPlugin;
+use Base3\ServiceLocator;
 
 class ModuledPagePlugin implements IPlugin {
 
 	private $servicelocator;
 
 	public function __construct() {
-		$this->servicelocator = \Base3\ServiceLocator::getInstance();
+		$this->servicelocator = ServiceLocator::getInstance();
 	}
 
 	// Implementation of IBase
@@ -22,7 +23,7 @@ class ModuledPagePlugin implements IPlugin {
 
 	public function init() {
 		$this->servicelocator
-			->set($this->getName(), $this, true)
+			->set($this->getName(), $this, ServiceLocator::SHARED)
 			->set('view', function() { return new \Base3\MvcView; })
 			;
 	}
