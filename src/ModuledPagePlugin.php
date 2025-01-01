@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ModuledPage;
 
@@ -22,10 +22,19 @@ class ModuledPagePlugin implements IPlugin {
 	// Implementation of IPlugin
 
 	public function init() {
+
 		$this->servicelocator
-			->set($this->getName(), $this, ServiceLocator::SHARED)
-			->set('view', function() { return new \Base3\MvcView; })
-			;
+
+			->set(
+				$this->getName(),
+				$this,
+				ServiceLocator::SHARED)
+
+			->set(
+				'view',
+				function() {
+					return new \Base3\MvcView;
+				});
 	}
 
 }
