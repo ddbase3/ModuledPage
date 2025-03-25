@@ -33,7 +33,7 @@ class ModuledPagePlugin implements IPlugin {
 			->set(
 				'view',
 				function() {
-					return new \Base3\MvcView;
+					return new \Core\MvcView;
 				});
 	}
 
