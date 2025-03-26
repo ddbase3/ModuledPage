@@ -2,8 +2,8 @@
 
 namespace ModuledPage;
 
-use Api\IPlugin;
-use Base3\ServiceLocator;
+use Base3\Api\IPlugin;
+use Base3\Core\ServiceLocator;
 
 class ModuledPagePlugin implements IPlugin {
 
@@ -33,7 +33,7 @@ class ModuledPagePlugin implements IPlugin {
 			->set(
 				'view',
 				function() {
-					return new \Core\MvcView;
+					return new \Base3\Core\MvcView;
 				});
 	}
 

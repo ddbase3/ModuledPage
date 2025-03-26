@@ -2,6 +2,6 @@
 
 namespace ModuledPage\Page;
 
-use Page\Api\IPageModuleContent;
+use Base3\Page\Api\IPageModuleContent;
 
 abstract class AbstractModuleContent extends AbstractModule implements IPageModuleContent {}

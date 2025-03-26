@@ -2,7 +2,7 @@
 
 namespace ModuledPage\Page;
 
-use Page\Api\IPageCatchall;
+use Base3\Page\Api\IPageCatchall;
 
 class GeneratedPage extends AbstractModuledPage implements IPageCatchall {
 
@@ -22,7 +22,7 @@ class GeneratedPage extends AbstractModuledPage implements IPageCatchall {
 		$pagecfg = $this->getPageCfg();
 
 		foreach ($pagecfg["pageheaders"] as $pageheader) {
-			$pagemoduleheader = $this->classmap->getInstanceByInterfaceName("Page\\Api\\IPageModuleHeader", $pageheader["name"]);
+			$pagemoduleheader = $this->classmap->getInstanceByInterfaceName("Base3\\Page\\Api\\IPageModuleHeader", $pageheader["name"]);
 			if (isset($pageheader["active"]) && !$pageheader["active"]) continue;
 			if (isset($pageheader["user"]) && is_array($pageheader["user"])) {
 				$userid = $accesscontrol->getUserId();
@@ -33,7 +33,7 @@ class GeneratedPage extends AbstractModuledPage implements IPageCatchall {
 		}
 
 		foreach ($pagecfg["pagecontents"] as $pagecontent) {
-			$pagemodulecontent = $this->classmap->getInstanceByInterfaceName("Page\\Api\\IPageModuleContent", $pagecontent["name"]);
+			$pagemodulecontent = $this->classmap->getInstanceByInterfaceName("Base3\\Page\\Api\\IPageModuleContent", $pagecontent["name"]);
 			if (isset($pagecontent["active"]) && !$pagecontent["active"]) continue;
 			if (isset($pagecontent["user"]) && is_array($pagecontent["user"])) {
 				$userid = $accesscontrol->getUserId();

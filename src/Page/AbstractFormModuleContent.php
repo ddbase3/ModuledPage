@@ -2,7 +2,7 @@
 
 namespace ModuledPage\Page;
 
-use Page\Api\IPagePostDataProcessor;
+use Base3\Page\Api\IPagePostDataProcessor;
 
 abstract class AbstractFormModuleContent extends AbstractModuleContent implements IPagePostDataProcessor {
 

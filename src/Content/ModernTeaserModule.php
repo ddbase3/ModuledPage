@@ -2,6 +2,7 @@
 
 namespace ModuledPage\Content;
 
+use Base3\Core\ServiceLocator;
 use ModuledPage\Page\AbstractModuleContent;
 
 class ModernTeaserModule extends AbstractModuleContent {
@@ -9,7 +10,7 @@ class ModernTeaserModule extends AbstractModuleContent {
 	private $servicelocator;
 
 	public function __construct() {
-		$this->servicelocator = \Base3\ServiceLocator::getInstance();
+		$this->servicelocator = ServiceLocator::getInstance();
 	}
 
 	public function requiresModule() {

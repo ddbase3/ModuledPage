@@ -2,7 +2,8 @@
 
 namespace ModuledPage\Page;
 
-use Page\Api\IPage;
+use Base3\Core\ServiceLocator;
+use Base3\Page\Api\IPage;
 
 abstract class AbstractModuledPage implements IPage {
 
@@ -17,7 +18,7 @@ abstract class AbstractModuledPage implements IPage {
 	private $pagecontents = array();
 
 	public function __construct() {
-		$this->servicelocator = \Base3\ServiceLocator::getInstance();
+		$this->servicelocator = ServiceLocator::getInstance();
 		$this->classmap = $this->servicelocator->get('classmap');
 		$this->view = $this->servicelocator->get('view');
 		$this->statushandler = $this->servicelocator->get('statushandler');
@@ -96,12 +97,12 @@ abstract class AbstractModuledPage implements IPage {
 	}
 
 	private function checkDependencies($o) {
-		if ($o instanceof \Page\Api\IPageModuleDependent) {
+		if ($o instanceof \Base3\Page\Api\IPageModuleDependent) {
 			$reqMods = $o->getRequiredModules();
 			foreach ($reqMods as $reqMod) {
 				foreach ($this->pageheaders as $h) if ($reqMod == $h->getName()) continue;
 				// $this->addHeader($this->servicelocator->get($reqMod));
-				$instance = $this->classmap->getInstanceByInterfaceName("Page\\Api\\IPageModuleHeader", $reqMod);
+				$instance = $this->classmap->getInstanceByInterfaceName("Base3\\Page\\Api\\IPageModuleHeader", $reqMod);
 				$this->addHeader($instance);
 			}
 		}

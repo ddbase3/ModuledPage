@@ -2,6 +2,7 @@
 
 namespace ModuledPage\Header;
 
+use Base3\Core\ServiceLocator;
 use ModuledPage\Page\AbstractModuleHeader;
 
 class MultilangPageModule extends AbstractModuleHeader {
@@ -12,7 +13,7 @@ class MultilangPageModule extends AbstractModuleHeader {
 
 	public function getHtml() {
 
-		$servicelocator = \Base3\ServiceLocator::getInstance();
+		$servicelocator = ServiceLocator::getInstance();
 		$cnf = $servicelocator->get('configuration')->get('base');
 		$language = $servicelocator->get('language');
 

@@ -2,7 +2,7 @@
 
 namespace ModuledPage\Page;
 
-use Page\Api\IPageModuleDependent;
+use Base3\Page\Api\IPageModuleDependent;
 
 abstract class AbstractModule implements IPageModuleDependent {
 
