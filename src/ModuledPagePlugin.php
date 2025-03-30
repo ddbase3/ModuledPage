@@ -34,7 +34,12 @@ class ModuledPagePlugin implements IPlugin {
 				'view',
 				function() {
 					return new \Base3\Core\MvcView;
-				});
-	}
+				})
 
+                        ->set(
+                                'moduledpagechecks',
+                                array(
+                                        function() { return new \Base3\Core\Check; }
+                                ));
+	}
 }
