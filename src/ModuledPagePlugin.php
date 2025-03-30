@@ -41,7 +41,5 @@ class ModuledPagePlugin implements IPlugin {
                                 array(
                                         function() { return new \Base3\Check; }
                                 ));
-
 	}
-
 }
