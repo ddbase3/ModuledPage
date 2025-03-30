@@ -102,7 +102,7 @@ abstract class AbstractModuledPage implements IPage {
 			foreach ($reqMods as $reqMod) {
 				foreach ($this->pageheaders as $h) if ($reqMod == $h->getName()) continue;
 				// $this->addHeader($this->servicelocator->get($reqMod));
-				$instance = $this->classmap->getInstanceByInterfaceName("Base3\\Page\\Api\\IPageModuleHeader", $reqMod);
+				$instance = $this->classmap->getInstanceByInterfaceName(\Base3\Page\Api\IPageModuleHeader::class, $reqMod);
 				$this->addHeader($instance);
 			}
 		}
