@@ -3,14 +3,15 @@
 namespace ModuledPage;
 
 use Base3\Api\IPlugin;
+use Base3\Api\IContainer;
 use Base3\Core\ServiceLocator;
 
 class ModuledPagePlugin implements IPlugin {
 
 	private $servicelocator;
 
-	public function __construct() {
-		$this->servicelocator = ServiceLocator::getInstance();
+	public function __construct(IContainer $container) {
+		$this->servicelocator = $container;
 	}
 
 	// Implementation of IBase
@@ -39,7 +40,7 @@ class ModuledPagePlugin implements IPlugin {
                         ->set(
                                 'moduledpagechecks',
                                 array(
-                                        function() { return new \Base3\Core\Check; }
+                                        function() { return new \Base3\Core\Check($this->servicelocator->get(IContainer::class)); }
                                 ));
 	}
 }
