@@ -2,7 +2,10 @@
 
 namespace ModuledPage\Page;
 
+use Base3\Api\IClassMap;
+use Base3\Api\IMvcView;
 use Base3\Core\ServiceLocator;
+use Base3\Language\Api\ILanguage;
 use Base3\Page\Api\IPage;
 
 abstract class AbstractModuledPage implements IPage {
@@ -17,10 +20,14 @@ abstract class AbstractModuledPage implements IPage {
 	private $pageheaders = array();
 	private $pagecontents = array();
 
-	public function __construct() {
+	public function __construct(
+		IClassMap $classmap,
+		IMvcView $view,
+		ILanguage $language
+	) {
+		$this->classmap = $classmap;
+		$this->view = $view;
 		$this->servicelocator = ServiceLocator::getInstance();
-		$this->classmap = $this->servicelocator->get('classmap');
-		$this->view = $this->servicelocator->get('view');
 		$this->statushandler = $this->servicelocator->get('statushandler');
 		$this->language = $this->servicelocator->get('language');
 	}

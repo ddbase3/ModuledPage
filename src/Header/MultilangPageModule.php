@@ -2,32 +2,40 @@
 
 namespace ModuledPage\Header;
 
-use Base3\Core\ServiceLocator;
+use Base3\Configuration\Api\IConfiguration;
+use Base3\Language\Api\ILanguage;
 use ModuledPage\Page\AbstractModuleHeader;
 
 class MultilangPageModule extends AbstractModuleHeader {
+
+	private $configuration;
+	private $language;
+
+	public function __construct(
+		IConfiguration $configuration,
+		ILanguage $language
+	) {
+		$this->configuration = $configuration;
+		$this->language = $language;
+	}
 
 	public function getName() {
 		return "multilangpagemodule";
 	}
 
 	public function getHtml() {
-
-		$servicelocator = ServiceLocator::getInstance();
-		$cnf = $servicelocator->get('configuration')->get('base');
-		$language = $servicelocator->get('language');
+		$cnf = $this->configuration->get('base');
 
 		$out = isset($_REQUEST['out']) && strlen($_REQUEST['out']) ? $_REQUEST['out'] : 'html';
 		$name = isset($_REQUEST['name']) && strlen($_REQUEST['name']) ? $_REQUEST['name'] : 'index';
 
 		$elems = array();
 		$elems[] = '<base href="' . $cnf["url"] . '" />';
-		$elems[] = '<link rel="canonical" href="' . rtrim($cnf["url"], "/") . '/' . $language->getLanguage() . '/' . $name . '.' . $out . '" />';
+		$elems[] = '<link rel="canonical" href="' . rtrim($cnf["url"], "/") . '/' . $this->language->getLanguage() . '/' . $name . '.' . $out . '" />';
 		return implode("\n", $elems);
 	}
 
 	public function getPriority() {
 		return 5;
 	}
-
 }

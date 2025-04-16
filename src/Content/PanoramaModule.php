@@ -2,15 +2,15 @@
 
 namespace ModuledPage\Content;
 
-use Base3\Core\ServiceLocator;
+use Base3\Api\IMvcView;
 use ModuledPage\Page\AbstractModuleContent;
 
 class PanoramaModule extends AbstractModuleContent {
 
-	private $servicelocator;
+	private $view;
 
-	public function __construct() {
-		$this->servicelocator = ServiceLocator::getInstance();
+	public function __construct(IMvcView $view) {
+		$this->view = $view;
 	}
 
 	public function getName() {
@@ -18,13 +18,12 @@ class PanoramaModule extends AbstractModuleContent {
 	}
 
 	public function getHtml() {
-		$view = $this->servicelocator->get('view');
-		$view->setPath(DIR_PLUGIN . 'ModuledPage');
-		$view->setTemplate('Content/PanoramaModule.php');
+		$this->view->setPath(DIR_PLUGIN . 'ModuledPage');
+		$this->view->setTemplate('Content/PanoramaModule.php');
 		$defaults = array("image" => "", "height" => "30vh");
-		foreach ($defaults as $tag => $default) $view->assign($tag, isset($this->data[$tag]) ? $this->data[$tag] : $default);
-		foreach ($this->data as $tag => $content) $view->assign($tag, $content);
-		return $view->loadTemplate();
+		foreach ($defaults as $tag => $default) $this->view->assign($tag, isset($this->data[$tag]) ? $this->data[$tag] : $default);
+		foreach ($this->data as $tag => $content) $this->view->assign($tag, $content);
+		return $this->view->loadTemplate();
 	}
 
 }

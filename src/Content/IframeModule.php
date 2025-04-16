@@ -2,15 +2,15 @@
 
 namespace ModuledPage\Content;
 
-use Base3\Core\ServiceLocator;
+use Base3\Api\IMvcView;
 use ModuledPage\Page\AbstractModuleContent;
 
 class IframeModule extends AbstractModuleContent {
 
-	private $servicelocator;
+	private $view;
 
-	public function __construct() {
-		$this->servicelocator = ServiceLocator::getInstance();
+	public function __construct(IMvcView $view) {
+		$this->view = $view; 
 	}
 
 	public function getName() {
@@ -18,12 +18,11 @@ class IframeModule extends AbstractModuleContent {
 	}
 
 	public function getHtml() {
-		$view = $this->servicelocator->get('view');
-		$view->setPath(DIR_PLUGIN . 'ModuledPage');
-		$view->setTemplate('Content/IframeModule.php');
+		$this->view->setPath(DIR_PLUGIN . 'ModuledPage');
+		$this->view->setTemplate('Content/IframeModule.php');
 		$defaults = array("url" => "", "height" => "20em", "allow" => "");
-		foreach ($defaults as $tag => $default) $view->assign($tag, isset($this->data[$tag]) ? $this->data[$tag] : $default);
-		return $view->loadTemplate();
+		foreach ($defaults as $tag => $default) $this->view->assign($tag, isset($this->data[$tag]) ? $this->data[$tag] : $default);
+		return $this->view->loadTemplate();
 	}
 
 }

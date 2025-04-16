@@ -2,15 +2,15 @@
 
 namespace ModuledPage\Content;
 
-use Base3\Core\ServiceLocator;
+use Base3\Api\IMvcView;
 use ModuledPage\Page\AbstractModuleContent;
 
 class ModernTeaserModule extends AbstractModuleContent {
 
-	private $servicelocator;
+	private $view;
 
-	public function __construct() {
-		$this->servicelocator = ServiceLocator::getInstance();
+	public function __construct(IMvcView $view) {
+		$this->view = $view;
 	}
 
 	public function requiresModule() {
@@ -25,11 +25,10 @@ class ModernTeaserModule extends AbstractModuleContent {
 
 		// http://labs.zeroseven.de/architektur/html-kann-ganz-schoen-schraeg-sein/
 
-		$view = $this->servicelocator->get('view');
-		$view->setPath(DIR_PLUGIN . 'ModuledPage');
-		$view->setTemplate('Content/ModernTeaserModule.php');
-		foreach ($this->data as $tag => $content) $view->assign($tag, $content);
-		return $view->loadTemplate();
+		$this->view->setPath(DIR_PLUGIN . 'ModuledPage');
+		$this->view->setTemplate('Content/ModernTeaserModule.php');
+		foreach ($this->data as $tag => $content) $this->view->assign($tag, $content);
+		return $this->view->loadTemplate();
 	}
 
 }
