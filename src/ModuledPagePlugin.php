@@ -28,26 +28,15 @@ class ModuledPagePlugin implements IPlugin {
 
 		$this->container
 
-			->set(
-				$this->getName(),
-				$this,
-				IContainer::SHARED)
+			->set($this->getName(), $this, IContainer::SHARED)
 
-			->set(
-				'view',
-				function() {
-					return new MvcView;
-				})
-
-			->set(
-				IMvcView::class,
-				'view',
-				IContainer::ALIAS)
+			->set('view', fn() => new MvcView)
+			->set(IMvcView::class, 'view', IContainer::ALIAS)
 
                         ->set(
                                 'moduledpagechecks',
                                 array(
-                                        function() { return new Check($this->container->get(IContainer::class)); }
+                                        fn() => new Check($this->container)
                                 ));
 	}
 }
