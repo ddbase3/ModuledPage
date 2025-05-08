@@ -20,6 +20,7 @@ class GeneratedPage extends AbstractModuledPage implements IPageCatchall {
 		$language = $this->servicelocator->get('language');
 
 		$pagecfg = $this->getPageCfg();
+		if ($pagecfg == null) return '';
 
 		foreach ($pagecfg["pageheaders"] as $pageheader) {
 			$pagemoduleheader = $this->classmap->getInstanceByInterfaceName(\Base3\Page\Api\IPageModuleHeader::class, $pageheader["name"]);
@@ -53,6 +54,7 @@ class GeneratedPage extends AbstractModuledPage implements IPageCatchall {
 	// Private methods
 
 	private function getPageCfg() {
+		if (!isset($_REQUEST["name"])) return null;
 		$files = array(rtrim(DIR_LOCAL, DIRECTORY_SEPARATOR) . "/Page/page-" . $_REQUEST["name"] . ".json");
 		foreach ($this->classmap->getPlugins() as $plugin)
 			$files[] = rtrim(DIR_PLUGIN, DIRECTORY_SEPARATOR) . "/" . $plugin . "/local/Page/page-" . $_REQUEST["name"] . ".json";
