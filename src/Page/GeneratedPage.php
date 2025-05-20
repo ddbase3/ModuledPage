@@ -22,7 +22,7 @@ class GeneratedPage extends AbstractModuledPage implements IPageCatchall {
 		$pagecfg = $this->getPageCfg();
 		if ($pagecfg == null) return '';
 
-		foreach ($pagecfg["pageheaders"] as $pageheader) {
+		foreach ($pagecfg['pageheaders'] as $pageheader) {
 			$pagemoduleheader = $this->classmap->getInstanceByInterfaceName(\Base3\Page\Api\IPageModuleHeader::class, $pageheader["name"]);
 			if (isset($pageheader["active"]) && !$pageheader["active"]) continue;
 			if (isset($pageheader["user"]) && is_array($pageheader["user"])) {
@@ -33,7 +33,7 @@ class GeneratedPage extends AbstractModuledPage implements IPageCatchall {
 			$this->addHeader($pagemoduleheader);
 		}
 
-		foreach ($pagecfg["pagecontents"] as $pagecontent) {
+		foreach ($pagecfg['pagecontents'] as $pagecontent) {
 			$pagemodulecontent = $this->classmap->getInstanceByInterfaceName(\Base3\Page\Api\IPageModuleContent::class, $pagecontent["name"]);
 			if (isset($pagecontent["active"]) && !$pagecontent["active"]) continue;
 			if (isset($pagecontent["user"]) && is_array($pagecontent["user"])) {
@@ -46,6 +46,17 @@ class GeneratedPage extends AbstractModuledPage implements IPageCatchall {
 			}
 			if (isset($pagecontent["data"])) $pagemodulecontent->setData($pagecontent["data"]);
 			$this->addContent($pagemodulecontent);
+		}
+
+		foreach ($pagecfg['pagefooters'] as $pagefooter) {
+			$pagemodulefooter = $this->classmap->getInstanceByInterfaceName(\Base3\Page\Api\IPageModuleFooter::class, $pagefooter["name"]);
+			if (isset($pagefooter["active"]) && !$pagefooter["active"]) continue;
+			if (isset($pagefooter["user"]) && is_array($pagefooter["user"])) {
+				$userid = $accesscontrol->getUserId();
+				if (!in_array($userid, $pagefooter["user"])) continue;
+			}
+			if (isset($pagefooter["data"])) $pagemodulefooter->setData($pagefooter["data"]);
+			$this->addFooter($pagemodulefooter);
 		}
 
 		return parent::getOutput($out);
@@ -68,7 +79,9 @@ class GeneratedPage extends AbstractModuledPage implements IPageCatchall {
 			header("HTTP/1.0 404 Not Found");
 			die("404 Not Found\n");
 		}
+		$baseContent = ['pageheaders' => [], 'pagecontents' => [], 'pagefooters' => []];
 		$content = file_get_contents($pagecfgfile);
-		return json_decode($content, true);
+		$parsedContent = json_decode($content, true);
+		return array_merge($baseContent, $parsedContent);
 	}
 }

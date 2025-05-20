@@ -15,4 +15,6 @@
 <?php echo $this->_['bodyhtml']; ?>
 	</body>
 
+<?php echo $this->_['foothtml']; ?>
+
 </html>

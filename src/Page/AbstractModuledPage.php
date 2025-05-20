@@ -19,6 +19,7 @@ abstract class AbstractModuledPage implements IPage {
 	private $title = '';
 	private $pageheaders = array();
 	private $pagecontents = array();
+	private $pagefooters = array();
 
 	public function __construct(
 		IClassMap $classmap,
@@ -55,6 +56,12 @@ abstract class AbstractModuledPage implements IPage {
 		$this->pagecontents[] = $pagecontent;
 	}
 
+	protected function addFooter($pagefooter) {
+		foreach ($this->pagefooters as $f) if ($pagefooter->getName() == $f->getName()) return;  // no duplicates
+		$this->checkDependencies($pagefooter);
+		$this->pagefooters[] = $pagefooter;
+	}
+
 	public function getOutput($out = "html") {
 		$this->view->setPath(DIR_PLUGIN . 'ModuledPage');
 		$this->view->setTemplate('Page/Page.php');
@@ -69,6 +76,7 @@ abstract class AbstractModuledPage implements IPage {
 		$this->view->assign('title', $this->title);
 		$this->view->assign('headhtml', $this->getHeadHtml());
 		$this->view->assign('bodyhtml', $this->getBodyHtml());
+		$this->view->assign('foothtml', $this->getFootHtml());
 		$this->view->assign('language', $this->language ? $this->language->getLanguage() : null);
 
 		return $this->view->loadTemplate();
@@ -82,10 +90,7 @@ abstract class AbstractModuledPage implements IPage {
 
 	private function getHeadHtml() {
 		$headhtml = "\n";
-		usort($this->pageheaders, function($a, $b) {
-			if ($a->getPriority() == $b->getPriority()) return 0;
-			return $a->getPriority() < $b->getPriority() ? -1 : 1;
-		});
+		usort($this->pageheaders, fn($a, $b) => $a->getPriority() <=> $b->getPriority());
 		foreach ($this->pageheaders as $pageheader) {
 			$html = $pageheader->getHtml();
 			if (!strlen($html)) continue;
@@ -101,6 +106,19 @@ abstract class AbstractModuledPage implements IPage {
 		foreach ($this->pagecontents as $pagecontent) $bodyhtml .= $pagecontent->getHtml() . "\n";
 		$bodyhtml .= "\n";
 		return $bodyhtml;
+	}
+
+	private function getFootHtml() {
+		$foothtml = "\n";
+		usort($this->pagefooters, fn($a, $b) => $a->getPriority() <=> $b->getPriority());
+		foreach ($this->pagefooters as $pagefooter) {
+			$html = $pagefooter->getHtml();
+			if (!strlen($html)) continue;
+			$lines = explode("\n", $html);
+			foreach ($lines as $line) $foothtml .= "\t\t" . $line . "\n";
+			$foothtml .= "\n";
+		}
+		return $foothtml;
 	}
 
 	private function checkDependencies($o) {
