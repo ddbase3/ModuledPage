@@ -13,8 +13,8 @@
 ?>
 	<body<?php echo $classstr; ?>>
 <?php echo $this->_['bodyhtml']; ?>
-	</body>
 
 <?php echo $this->_['foothtml']; ?>
+	</body>
 
 </html>
