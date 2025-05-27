@@ -8,7 +8,7 @@ class GeneratedPage extends AbstractModuledPage implements IPageCatchall {
 
 	// Implementation of IBase
 
-	public function getName() {
+	public static function getName(): string {
 		return "generatedpage";
 	}
 

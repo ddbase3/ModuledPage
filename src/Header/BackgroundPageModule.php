@@ -6,7 +6,7 @@ use ModuledPage\Page\AbstractModuleHeader;
 
 class BackgroundPageModule extends AbstractModuleHeader {
 
-	public function getName() {
+	public static function getName(): string {
 		return "backgroundpagemodule";
 	}
 

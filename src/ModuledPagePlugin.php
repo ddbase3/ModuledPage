@@ -18,7 +18,7 @@ class ModuledPagePlugin implements IPlugin {
 
 	// Implementation of IBase
 
-	public function getName() {
+	public static function getName(): string {
 		return "moduledpageplugin";
 	}
 

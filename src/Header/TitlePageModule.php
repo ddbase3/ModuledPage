@@ -6,7 +6,7 @@ use ModuledPage\Page\AbstractModuleHeader;
 
 class TitlePageModule extends AbstractModuleHeader {
 
-	public function getName() {
+	public static function getName(): string {
 		return "titlepagemodule";
 	}
 

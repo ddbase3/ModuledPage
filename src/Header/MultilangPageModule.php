@@ -19,7 +19,7 @@ class MultilangPageModule extends AbstractModuleHeader {
 		$this->language = $language;
 	}
 
-	public function getName() {
+	public static function getName(): string {
 		return "multilangpagemodule";
 	}
 

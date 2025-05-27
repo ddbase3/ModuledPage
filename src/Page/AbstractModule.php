@@ -22,9 +22,9 @@ abstract class AbstractModule implements IPageModuleDependent {
 
 	// Implementation of IBase
 
-	public function getName() {
-		$ps = explode("\\", get_class($this));
-		return strtolower(array_pop($ps));
+	public static function getName(): string {
+		$fullClass = static::class;
+		$parts = explode('\\', $fullClass);
+		return strtolower(end($parts));
 	}
-
 }

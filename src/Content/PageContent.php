@@ -14,7 +14,7 @@ class PageContent extends AbstractModuleContent {
 		$this->view = $view;
 	}
 
-	public function getName() {
+	public static function getName(): string {
 		return "pagecontent";
 	}
 

@@ -4,7 +4,7 @@ namespace ModuledPage\Page;
 
 class Index extends GeneratedPage {
 
-	public function getName() {
+	public static function getName(): string {
 		return "index";
 	}
 
