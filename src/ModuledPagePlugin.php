@@ -2,19 +2,15 @@
 
 namespace ModuledPage;
 
-use Base3\Api\IPlugin;
 use Base3\Api\IContainer;
-use Base3\Core\MvcView;
 use Base3\Api\IMvcView;
+use Base3\Api\IPlugin;
 use Base3\Core\Check;
+use Base3\Core\MvcView;
 
 class ModuledPagePlugin implements IPlugin {
 
-	private $container;
-
-	public function __construct(IContainer $container) {
-		$this->container = $container;
-	}
+	public function __construct(private readonly IContainer $container) {}
 
 	// Implementation of IBase
 
