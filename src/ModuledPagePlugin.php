@@ -28,7 +28,7 @@ class ModuledPagePlugin implements IPlugin {
 
 		$this->container
 
-			->set($this->getName(), $this, IContainer::SHARED)
+			->set(self::getName(), $this, IContainer::SHARED)
 
 			->set('view', fn() => new MvcView)
 			->set(IMvcView::class, 'view', IContainer::ALIAS)
