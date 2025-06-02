@@ -55,7 +55,7 @@ class ParallaxModule extends AbstractModuleContent implements ISchemaProvider {
 					'default' => '30vh',
 				],
 			],
-			'required' => ['content'],
+			'required' => ['image'],
 		];
 		return $schema;
 	}
