@@ -11,10 +11,7 @@ use Base3\Page\Api\IPage;
 abstract class AbstractModuledPage implements IPage {
 
 	protected $servicelocator;
-	protected $classmap;
-	private $view;
-	private $statushandler;
-	private $language;
+	protected $statushandler;
 
 	private $title = '';
 	private $pageheaders = array();
@@ -22,15 +19,12 @@ abstract class AbstractModuledPage implements IPage {
 	private $pagefooters = array();
 
 	public function __construct(
-		IClassMap $classmap,
-		IMvcView $view,
-		ILanguage $language
+		protected readonly IClassMap $classmap,
+		protected readonly IMvcView $view,
+		protected readonly ILanguage $language
 	) {
-		$this->classmap = $classmap;
-		$this->view = $view;
 		$this->servicelocator = ServiceLocator::getInstance();
 		$this->statushandler = $this->servicelocator->get('statushandler');
-		$this->language = $this->servicelocator->get('language');
 	}
 
 	// Implementation of IPage

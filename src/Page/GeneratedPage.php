@@ -3,6 +3,9 @@
 namespace ModuledPage\Page;
 
 use Base3\Page\Api\IPageCatchall;
+use Base3\Page\Api\IPageModuleHeader;
+use Base3\Page\Api\IPageModuleContent;
+use Base3\Page\Api\IPageModuleFooter;
 
 class GeneratedPage extends AbstractModuledPage implements IPageCatchall {
 
@@ -19,14 +22,15 @@ class GeneratedPage extends AbstractModuledPage implements IPageCatchall {
 		$accesscontrol = $this->servicelocator->get('accesscontrol');
 		$language = $this->servicelocator->get('language');
 
+		$userid = $accesscontrol->getUserId();
+
 		$pagecfg = $this->getPageCfg();
 		if ($pagecfg == null) return '';
 
 		foreach ($pagecfg['pageheaders'] as $pageheader) {
-			$pagemoduleheader = $this->classmap->getInstanceByInterfaceName(\Base3\Page\Api\IPageModuleHeader::class, $pageheader["name"]);
+			$pagemoduleheader = $this->classmap->getInstanceByInterfaceName(IPageModuleHeader::class, $pageheader["name"]);
 			if (isset($pageheader["active"]) && !$pageheader["active"]) continue;
 			if (isset($pageheader["user"]) && is_array($pageheader["user"])) {
-				$userid = $accesscontrol->getUserId();
 				if (!in_array($userid, $pageheader["user"])) continue;
 			}
 			if (isset($pageheader["data"])) $pagemoduleheader->setData($pageheader["data"]);
@@ -34,10 +38,9 @@ class GeneratedPage extends AbstractModuledPage implements IPageCatchall {
 		}
 
 		foreach ($pagecfg['pagecontents'] as $pagecontent) {
-			$pagemodulecontent = $this->classmap->getInstanceByInterfaceName(\Base3\Page\Api\IPageModuleContent::class, $pagecontent["name"]);
+			$pagemodulecontent = $this->classmap->getInstanceByInterfaceName(IPageModuleContent::class, $pagecontent["name"]);
 			if (isset($pagecontent["active"]) && !$pagecontent["active"]) continue;
 			if (isset($pagecontent["user"]) && is_array($pagecontent["user"])) {
-				$userid = $accesscontrol->getUserId();
 				if (!in_array($userid, $pagecontent["user"])) continue;
 			}
 			if (isset($pagecontent["language"]) && is_array($pagecontent["language"])) {
@@ -49,10 +52,9 @@ class GeneratedPage extends AbstractModuledPage implements IPageCatchall {
 		}
 
 		foreach ($pagecfg['pagefooters'] as $pagefooter) {
-			$pagemodulefooter = $this->classmap->getInstanceByInterfaceName(\Base3\Page\Api\IPageModuleFooter::class, $pagefooter["name"]);
+			$pagemodulefooter = $this->classmap->getInstanceByInterfaceName(IPageModuleFooter::class, $pagefooter["name"]);
 			if (isset($pagefooter["active"]) && !$pagefooter["active"]) continue;
 			if (isset($pagefooter["user"]) && is_array($pagefooter["user"])) {
-				$userid = $accesscontrol->getUserId();
 				if (!in_array($userid, $pagefooter["user"])) continue;
 			}
 			if (isset($pagefooter["data"])) $pagemodulefooter->setData($pagefooter["data"]);
