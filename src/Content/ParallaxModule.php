@@ -3,9 +3,10 @@
 namespace ModuledPage\Content;
 
 use Base3\Api\IMvcView;
+use Base3\Api\ISchemaProvider;
 use ModuledPage\Page\AbstractModuleContent;
 
-class ParallaxModule extends AbstractModuleContent {
+class ParallaxModule extends AbstractModuleContent implements ISchemaProvider {
 
 	private $view;
 
@@ -13,9 +14,13 @@ class ParallaxModule extends AbstractModuleContent {
 		$this->view = $view;
 	}
 
+	// Implementation of IBase
+
 	public static function getName(): string {
 		return "parallaxmodule";
 	}
+
+	// Implementation of IPageModule
 
 	public function getHtml() {
 		$this->view->setPath(DIR_PLUGIN . 'ModuledPage');
@@ -26,4 +31,32 @@ class ParallaxModule extends AbstractModuleContent {
 		return $this->view->loadTemplate();
 	}
 
+	// Implementation of ISchemaProvider
+
+	public function getSchema(): array {
+		$schema = [
+			'$schema' => 'https://json-schema.org/draft-2020-12/schema',
+			'type' => 'object',
+			'properties' => [
+				'image' => [
+					'type' => 'string',
+					'description' => 'Image URL',
+					'maxLength' => 200,
+				],
+				'content' => [
+					'type' => 'string',
+					'description' => 'Content',
+					'maxLength' => 200,
+				],
+				'height' => [
+					'type' => 'string',
+					'description' => 'Height',
+					'maxLength' => 20,
+					'default' => '30vh',
+				],
+			],
+			'required' => ['content'],
+		];
+		return $schema;
+	}
 }

@@ -3,10 +3,11 @@
 namespace ModuledPage\Content;
 
 use Base3\Api\IMvcView;
+use Base3\Api\ISchemaProvider;
 use Base3\Core\ServiceLocator;
 use ModuledPage\Page\AbstractModuleContent;
 
-class PageContent extends AbstractModuleContent {
+class PageContent extends AbstractModuleContent implements ISchemaProvider {
 
 	private $view;
 
@@ -14,9 +15,13 @@ class PageContent extends AbstractModuleContent {
 		$this->view = $view;
 	}
 
+	// Implementation of IBase
+
 	public static function getName(): string {
 		return "pagecontent";
 	}
+
+	// Implementation of IPageModule
 
 	public function getHtml() {
 		$this->view->setPath(DIR_PLUGIN . 'ModuledPage');
@@ -27,4 +32,20 @@ class PageContent extends AbstractModuleContent {
 		return $this->view->loadTemplate();
 	}
 
+	// Implementation of ISchemaProvider
+
+	public function getSchema(): array {
+		$schema = [
+			'$schema' => 'https://json-schema.org/draft-2020-12/schema',
+			'type' => 'object',
+			'properties' => [
+				'content' => [
+					'type' => 'string',
+					'description' => 'Content',
+				],
+			],
+			'required' => ['content'],
+		];
+		return $schema;
+	}
 }
