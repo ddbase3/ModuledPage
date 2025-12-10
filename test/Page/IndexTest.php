@@ -4,36 +4,20 @@ namespace ModuledPage\Test\Page;
 
 use PHPUnit\Framework\TestCase;
 use ModuledPage\Page\Index;
-use Base3\Api\IClassMap;
-use Base3\Api\IMvcView;
-use Base3\Language\Api\ILanguage;
+use ReflectionClass;
 
-class IndexTest extends TestCase
-{
-    public function testGetName(): void
-    {
-        // Mocken der Abhängigkeiten
-        $classMapMock = $this->createMock(IClassMap::class);
-        $viewMock = $this->createMock(IMvcView::class);
-        $languageMock = $this->createMock(ILanguage::class);
+class IndexTest extends TestCase {
 
-        // Instanziierung der Index-Klasse mit den gemockten Abhängigkeiten
-        $index = new Index($classMapMock, $viewMock, $languageMock);
+	public function testGetName(): void {
+		$this->assertSame('index', Index::getName());
+	}
 
-        $this->assertSame('index', $index->getName());
-    }
+	public function testGetUrl(): void {
+		// Create instance without calling parent constructor (requires dependencies)
+		$ref = new ReflectionClass(Index::class);
+		$index = $ref->newInstanceWithoutConstructor();
 
-    public function testGetUrl(): void
-    {
-        // Mocken der Abhängigkeiten
-        $classMapMock = $this->createMock(IClassMap::class);
-        $viewMock = $this->createMock(IMvcView::class);
-        $languageMock = $this->createMock(ILanguage::class);
+		$this->assertSame('./', $index->getUrl());
+	}
 
-        // Instanziierung der Index-Klasse mit den gemockten Abhängigkeiten
-        $index = new Index($classMapMock, $viewMock, $languageMock);
-
-        $this->assertSame('./', $index->getUrl());
-    }
 }
-
