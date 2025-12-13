@@ -8,11 +8,7 @@ use ModuledPage\Page\AbstractModuleContent;
 
 class ParallaxModule extends AbstractModuleContent implements ISchemaProvider {
 
-	private $view;
-
-	public function __construct(IMvcView $view) {
-		$this->view = $view;
-	}
+	public function __construct(private readonly IMvcView $view) {}
 
 	// Implementation of IBase
 

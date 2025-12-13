@@ -8,16 +8,10 @@ use ModuledPage\Page\AbstractModuleHeader;
 
 class MultilangPageModule extends AbstractModuleHeader {
 
-	private $configuration;
-	private $language;
-
 	public function __construct(
-		IConfiguration $configuration,
-		ILanguage $language
-	) {
-		$this->configuration = $configuration;
-		$this->language = $language;
-	}
+		private readonly IConfiguration $configuration,
+		private readonly ILanguage $language
+	) {}
 
 	public static function getName(): string {
 		return "multilangpagemodule";

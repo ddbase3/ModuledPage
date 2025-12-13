@@ -6,6 +6,8 @@ use ModuledPage\Page\AbstractModuleHeader;
 
 class TitlePageModule extends AbstractModuleHeader {
 
+	protected array $meta = [];
+
 	public static function getName(): string {
 		return "titlepagemodule";
 	}
@@ -25,5 +27,4 @@ class TitlePageModule extends AbstractModuleHeader {
 	public function getPriority() {
 		return 0;
 	}
-
 }

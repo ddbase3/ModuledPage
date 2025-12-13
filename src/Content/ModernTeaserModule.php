@@ -7,11 +7,7 @@ use ModuledPage\Page\AbstractModuleContent;
 
 class ModernTeaserModule extends AbstractModuleContent {
 
-	private $view;
-
-	public function __construct(IMvcView $view) {
-		$this->view = $view;
-	}
+	public function __construct(private readonly IMvcView $view) {}
 
 	public function requiresModule() {
 		return array();

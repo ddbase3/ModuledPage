@@ -4,7 +4,6 @@ namespace ModuledPage\Content;
 
 use Base3\Api\IMvcView;
 use Base3\Api\ISchemaProvider;
-use Base3\Core\ServiceLocator;
 use ModuledPage\Page\AbstractModuleContent;
 
 class PageContent extends AbstractModuleContent implements ISchemaProvider {

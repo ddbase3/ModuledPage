@@ -7,51 +7,53 @@ use Base3\Api\IClassMap;
 use Base3\Page\Api\IPageCatchall;
 
 final class ModuledPageRoute implements IRoute {
-    public function __construct(private IClassMap $classmap) {}
 
-    public function match(string $path): ?array {
-        $path = explode('?', $path, 2)[0];
-        $path = ltrim($path, '/');
+	public function __construct(private IClassMap $classmap) {}
 
-        if ($path === '' || $path === 'index.php') {
-            return ['name' => 'index'];
-        }
+	public function match(string $path): ?array {
+		$path = explode('?', $path, 2)[0];
+		$path = ltrim($path, '/');
 
-        // Sprachprefix + Name
-        if (preg_match('#^(?P<data>[a-z]{2})/(?P<name>[^/\.]+)\.(php|html|json|xml|help)$#i', $path, $m)) {
-            return ['data' => $m['data'], 'name' => $m['name']];
-        }
+		if ($path === '' || $path === 'index.php') {
+			return ['name' => 'index'];
+		}
 
-        // Nur Name
-        if (preg_match('#^(?P<name>[^/\.]+)\.(php|html|json|xml|help)$#i', $path, $m)) {
-            return ['name' => $m['name']];
-        }
+		if (preg_match('#^(?P<data>[a-z]{2})/(?P<name>[^/\.]+)\.(php|html|json|xml|help)$#i', $path, $m)) {
+			return ['data' => $m['data'], 'name' => $m['name']];
+		}
 
-        return null;
-    }
+		if (preg_match('#^(?P<name>[^/\.]+)\.(php|html|json|xml|help)$#i', $path, $m)) {
+			return ['name' => $m['name']];
+		}
 
-    public function dispatch(array $match): string {
-        $name = $match['name'];
-        $data = $match['data'] ?? '';
+		return null;
+	}
 
-        $_GET['name'] = $name;
-        $_REQUEST['name'] = $name;
+	public function dispatch(array $match): string {
+		$name = $match['name'];
+		$data = $match['data'] ?? '';
 
-        if ($data !== '') {
-            $_GET['data'] = $data;
-            $_REQUEST['data'] = $data;
-        }
+		$_GET['name'] = $name;
+		$_REQUEST['name'] = $name;
 
-        $instances = $this->classmap->getInstancesByInterface(IPageCatchall::class);
-        $instance = reset($instances);
+		if ($data !== '') {
+			$_GET['data'] = $data;
+			$_REQUEST['data'] = $data;
+		}
 
-        if (!is_object($instance)) {
-            header('HTTP/1.0 404 Not Found');
-            return "404 Not Found\n";
-        }
+		$instances = $this->classmap->getInstancesByInterface(IPageCatchall::class);
+		$instance = reset($instances);
 
-        header('Content-Type: text/html; charset=utf-8');
-        return (string)$instance->getOutput('html');
-    }
+		if (!is_object($instance)) {
+			if (!headers_sent()) {
+				header('HTTP/1.0 404 Not Found');
+			}
+			return "404 Not Found\n";
+		}
+
+		if (!headers_sent()) {
+			header('Content-Type: text/html; charset=utf-8');
+		}
+		return (string)$instance->getOutput('html');
+	}
 }
-

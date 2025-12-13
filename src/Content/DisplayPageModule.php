@@ -14,27 +14,31 @@ class DisplayPageModule extends AbstractModuleContent {
 		private readonly IClassMap $classmap
 	) {}
 
-	// Implementation of IBase
-
 	public static function getName(): string {
-		return 'displaypagemodule'; 
+		return 'displaypagemodule';
 	}
-
-	// Implementation of IPageModule
 
 	public function getHtml() {
 		$this->view->setPath(DIR_PLUGIN . 'ModuledPage');
 		$this->view->setTemplate('Content/DisplayPageModule.php');
 
-                $defaults = ['display' => '', 'data' => []];
-                $settings = array_merge($defaults, $this->data);
+		$defaults = ['display' => '', 'data' => []];
+		$settings = array_merge($defaults, $this->data);
 
 		$content = '';
-		$display = $this->classmap->getInstanceByInterfaceName(IDisplay::class, $settings['display']);
-		if ($display != null) {
+
+		$instances = $this->classmap->getInstances([
+			'interface' => IDisplay::class,
+			'name' => (string)$settings['display'],
+		]);
+
+		$display = $instances[0] ?? null;
+
+		if ($display instanceof IDisplay) {
 			$display->setData($settings['data']);
 			$content = $display->getOutput();
 		}
+
 		$this->view->assign('content', $content);
 
 		return $this->view->loadTemplate();
