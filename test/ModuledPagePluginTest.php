@@ -4,6 +4,8 @@ namespace Test\ModuledPage;
 
 use Base3\Api\IContainer;
 use Base3\Api\IMvcView;
+use Base3\Language\Api\ILanguage;
+use Base3\Test\Language\LanguageStub;
 use ModuledPage\ModuledPagePlugin;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\TestCase;
@@ -38,18 +40,22 @@ final class ModuledPagePluginTest extends TestCase {
 
 		$this->assertGreaterThanOrEqual(4, count($calls));
 
+		// Plugin registration
 		$this->assertSame(ModuledPagePlugin::getName(), $calls[0]['name']);
 		$this->assertSame($plugin, $calls[0]['def']);
 		$this->assertSame(IContainer::SHARED, $calls[0]['flags']);
 
-		$this->assertSame('view', $calls[1]['name']);
+		// IMvcView factory first (closure expects container argument)
+		$this->assertSame(IMvcView::class, $calls[1]['name']);
 		$this->assertIsCallable($calls[1]['def']);
 		$this->assertSame(0, (int)$calls[1]['flags']);
 
-		$this->assertSame(IMvcView::class, $calls[2]['name']);
-		$this->assertSame('view', $calls[2]['def']);
+		// Then alias 'view' -> IMvcView
+		$this->assertSame('view', $calls[2]['name']);
+		$this->assertSame(IMvcView::class, $calls[2]['def']);
 		$this->assertSame(IContainer::ALIAS, $calls[2]['flags']);
 
+		// Checks
 		$this->assertSame('moduledpagechecks', $calls[3]['name']);
 		$this->assertIsArray($calls[3]['def']);
 		$this->assertSame(0, (int)$calls[3]['flags']);
@@ -66,10 +72,18 @@ final class ModuledPagePluginTest extends TestCase {
 
 		$container->method('set')
 			->willReturnCallback(function (string $name, $classDefinition, $flags = 0) use (&$viewFactory, $container) {
-				if ($name === 'view') {
+				if ($name === IMvcView::class) {
 					$viewFactory = $classDefinition;
 				}
 				return $container;
+			});
+
+		$container->method('get')
+			->willReturnCallback(function (string $name) {
+				if ($name === ILanguage::class) {
+					return new LanguageStub('en');
+				}
+				return null;
 			});
 
 		$plugin = new ModuledPagePlugin($container);
@@ -77,7 +91,7 @@ final class ModuledPagePluginTest extends TestCase {
 
 		$this->assertIsCallable($viewFactory);
 
-		$view = $viewFactory();
+		$view = $viewFactory($container);
 		$this->assertInstanceOf(IMvcView::class, $view);
 	}
 }

@@ -5,6 +5,7 @@ namespace Test\ModuledPage\Service;
 use Base3\Api\IClassMap;
 use Base3\Api\IRequest;
 use Base3\Api\ISchemaProvider;
+use Base3\Test\Core\ClassMapStub;
 use ModuledPage\Service\ModuledPageService;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\TestCase;
@@ -59,29 +60,7 @@ final class ModuledPageServiceTest extends TestCase {
 			['pagemodule', '', ''],
 		]);
 
-		// IClassMap Interface hat getInstanceByInterfaceName() nicht.
-		// Der Service ruft sie aber auf, daher implementieren wir sie "zusätzlich" im Stub.
-		$classmap = new class implements IClassMap {
-			public static function getName(): string { return 'classmap_stub'; }
-
-			public function instantiate(string $class) {
-				return null;
-			}
-
-			public function &getInstances(array $criteria = []) {
-				$empty = [];
-				return $empty;
-			}
-
-			public function getPlugins() {
-				return [];
-			}
-
-			public function getInstanceByInterfaceName(string $iface, string $name) {
-				return null;
-			}
-		};
-
+		$classmap = new ClassMapStub();
 		$service = new ModuledPageService($classmap, $request);
 
 		$this->assertSame('', $service->getOutput('json'));
@@ -94,27 +73,7 @@ final class ModuledPageServiceTest extends TestCase {
 			['pagemodule', '', 'does_not_exist'],
 		]);
 
-		$classmap = new class implements IClassMap {
-			public static function getName(): string { return 'classmap_stub'; }
-
-			public function instantiate(string $class) {
-				return null;
-			}
-
-			public function &getInstances(array $criteria = []) {
-				$empty = [];
-				return $empty;
-			}
-
-			public function getPlugins() {
-				return [];
-			}
-
-			public function getInstanceByInterfaceName(string $iface, string $name) {
-				return null;
-			}
-		};
-
+		$classmap = new ClassMapStub();
 		$service = new ModuledPageService($classmap, $request);
 
 		$this->assertSame('', $service->getOutput('json'));
@@ -137,34 +96,11 @@ final class ModuledPageServiceTest extends TestCase {
 
 		$schemaProvider = new class($schema) implements ISchemaProvider {
 			public function __construct(private array $schema) {}
-			public static function getName(): string { return 'schemaprovider_stub'; }
 			public function getSchema(): array { return $this->schema; }
 		};
 
-		$classmap = new class($schemaProvider) implements IClassMap {
-			public function __construct(private ISchemaProvider $provider) {}
-			public static function getName(): string { return 'classmap_stub'; }
-
-			public function instantiate(string $class) {
-				return null;
-			}
-
-			public function &getInstances(array $criteria = []) {
-				$empty = [];
-				return $empty;
-			}
-
-			public function getPlugins() {
-				return [];
-			}
-
-			public function getInstanceByInterfaceName(string $iface, string $name) {
-				if ($iface === ISchemaProvider::class && $name === 'demoModule') {
-					return $this->provider;
-				}
-				return null;
-			}
-		};
+		$classmap = new ClassMapStub();
+		$classmap->registerInstance($schemaProvider, 'demoModule', [ISchemaProvider::class]);
 
 		$service = new ModuledPageService($classmap, $request);
 

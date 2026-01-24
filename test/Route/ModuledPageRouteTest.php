@@ -4,6 +4,7 @@ namespace ModuledPage\Route;
 
 use Base3\Api\IClassMap;
 use Base3\Page\Api\IPageCatchall;
+use Base3\Test\Core\ClassMapStub;
 use PHPUnit\Framework\TestCase;
 
 final class ModuledPageRouteTest extends TestCase {
@@ -77,10 +78,11 @@ final class ModuledPageRouteTest extends TestCase {
 	}
 
 	public function testDispatchSetsGlobalsIncludingDataAndReturnsCatchallOutput(): void {
-		$catchall = new class {
-			public function getOutput(string $format): string {
-				return 'OUT:' . $format;
-			}
+		$catchall = new class implements IPageCatchall {
+			public static function getName(): string { return 'catchall_stub'; }
+			public function getUrl() { return null; }
+			public function getHelp() { return ''; }
+			public function getOutput($out = 'html') { return 'OUT:' . $out; }
 		};
 
 		$route = new ModuledPageRoute($this->createDummyClassMap([$catchall]));
@@ -100,31 +102,12 @@ final class ModuledPageRouteTest extends TestCase {
 	 * @param array<int, object> $instances
 	 */
 	private function createDummyClassMap(array $instances): IClassMap {
-		return new class($instances) implements IClassMap {
-			private array $instances;
+		$cm = new ClassMapStub();
 
-			public function __construct(array $instances) {
-				$this->instances = $instances;
-			}
+		foreach ($instances as $inst) {
+			$cm->registerInstance($inst, null, [IPageCatchall::class]);
+		}
 
-			public function instantiate(string $class) {
-				return null;
-			}
-
-			public function &getInstances(array $criteria = []) {
-				$empty = [];
-				return $empty;
-			}
-
-			public function getPlugins() {
-				return [];
-			}
-
-			// Not part of IClassMap interface, but used by ModuledPageRoute.
-			public function getInstancesByInterface(string $interface) {
-				if ($interface !== IPageCatchall::class) return [];
-				return $this->instances;
-			}
-		};
+		return $cm;
 	}
 }

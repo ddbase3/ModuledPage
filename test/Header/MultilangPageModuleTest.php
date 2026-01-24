@@ -4,6 +4,7 @@ namespace ModuledPage\Header;
 
 use Base3\Configuration\Api\IConfiguration;
 use Base3\Language\Api\ILanguage;
+use Base3\Test\Configuration\ConfigurationStub;
 use PHPUnit\Framework\TestCase;
 
 final class MultilangPageModuleTest extends TestCase {
@@ -64,13 +65,7 @@ final class MultilangPageModuleTest extends TestCase {
 	}
 
 	public function testGetPriorityReturns5(): void {
-		$configuration = new class implements IConfiguration {
-			public function get($configuration = "") {
-				return ['url' => 'https://example.com/'];
-			}
-			public function set($data, $configuration = "") {}
-			public function save() {}
-		};
+		$configuration = new ConfigurationStub();
 
 		$language = new class implements ILanguage {
 			public function getLanguage(): string { return 'de'; }
