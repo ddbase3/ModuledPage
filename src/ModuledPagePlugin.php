@@ -7,6 +7,7 @@ use Base3\Api\IMvcView;
 use Base3\Api\IPlugin;
 use Base3\Core\Check;
 use Base3\Core\MvcView;
+use Base3\Language\Api\ILanguage;
 
 class ModuledPagePlugin implements IPlugin {
 
@@ -26,8 +27,8 @@ class ModuledPagePlugin implements IPlugin {
 
 			->set(self::getName(), $this, IContainer::SHARED)
 
-			->set('view', fn() => new MvcView)
-			->set(IMvcView::class, 'view', IContainer::ALIAS)
+			->set(IMvcView::class, fn($c) => new MvcView($c->get(ILanguage::class)))
+			->set('view', IMvcView::class, IContainer::ALIAS)
 
                         ->set(
                                 'moduledpagechecks',
