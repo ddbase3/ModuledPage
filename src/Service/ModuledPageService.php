@@ -22,7 +22,7 @@ class ModuledPageService implements IOutput {
 
 	// Implementation of IOutput
 
-	public function getOutput($out = 'html'): string {
+	public function getOutput(string $out = 'html', bool $final = false): string {
 		if ($out != 'json') return '';
 
 		$method = $this->request->get('method', '');

@@ -10,13 +10,13 @@ abstract class AbstractFormModuleContent extends AbstractModuleContent implement
 		return $this->getName() . ".php";
 	}
 
-	public function getOutput($out = "html") {
+	public function getOutput(string $out = 'html', bool $final = false): string {
 		$this->processPostData();
 		header('Location: ' . $this->getForwardUrl());
 		exit;
 	}
 
-	public function getHelp() {
+	public function getHelp(): string {
 		$ps = explode("\\", get_class($this));
 		return 'Help of ' . array_pop($ps) . "\n";
 	}
@@ -28,5 +28,4 @@ abstract class AbstractFormModuleContent extends AbstractModuleContent implement
 	public function getForwardUrl() {
 		return isset($_SERVER["HTTP_REFERER"]) ? $_SERVER["HTTP_REFERER"] : "/";
 	}
-
 }

@@ -56,7 +56,7 @@ abstract class AbstractModuledPage implements IPage {
 		$this->pagefooters[] = $pagefooter;
 	}
 
-	public function getOutput($out = "html") {
+	public function getOutput(string $out = 'html', bool $final = false): string {
 		$this->view->setPath(DIR_PLUGIN . 'ModuledPage');
 		$this->view->setTemplate('Page/Page.php');
 
@@ -76,7 +76,7 @@ abstract class AbstractModuledPage implements IPage {
 		return $this->view->loadTemplate();
 	}
 
-	public function getHelp() {
+	public function getHelp(): string {
 		return 'Help of ' . $this->getName() . "\n";
 	}
 

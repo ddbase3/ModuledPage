@@ -17,7 +17,7 @@ class GeneratedPage extends AbstractModuledPage implements IPageCatchall {
 
 	// Implementation of IOutput
 
-	public function getOutput($out = "html") {
+	public function getOutput(string $out = 'html', bool $final = false): string {
 
 		$accesscontrol = $this->servicelocator->get('accesscontrol');
 		$language = $this->servicelocator->get('language');
@@ -61,7 +61,7 @@ class GeneratedPage extends AbstractModuledPage implements IPageCatchall {
 			$this->addFooter($pagemodulefooter);
 		}
 
-		return parent::getOutput($out);
+		return parent::getOutput($out, $final);
 	}
 
 	// Private methods
