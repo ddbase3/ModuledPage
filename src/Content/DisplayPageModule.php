@@ -22,7 +22,7 @@ class DisplayPageModule extends AbstractModuleContent {
 		$this->view->setPath(DIR_PLUGIN . 'ModuledPage');
 		$this->view->setTemplate('Content/DisplayPageModule.php');
 
-		$defaults = ['display' => '', 'data' => []];
+		$defaults = ['display' => '', 'data' => [], 'width' => 'frame'];
 		$settings = array_merge($defaults, $this->data);
 
 		$content = '';
@@ -40,6 +40,8 @@ class DisplayPageModule extends AbstractModuleContent {
 		}
 
 		$this->view->assign('content', $content);
+
+		$this->view->assign('width', $settings['width'] === 'frame' ? 'frame' : 'full');
 
 		return $this->view->loadTemplate();
 	}

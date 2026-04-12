@@ -21,7 +21,7 @@ class PageContent extends AbstractModuleContent implements ISchemaProvider {
 	public function getHtml() {
 		$this->view->setPath(DIR_PLUGIN . 'ModuledPage');
 		$this->view->setTemplate('Content/PageContent.php');
-		$defaults = array("content" => "", "background" => "none");
+		$defaults = ['content' => '', 'background' => 'none', 'width' => 'frame'];
 		foreach ($defaults as $tag => $default) $this->view->assign($tag, isset($this->data[$tag]) ? $this->data[$tag] : $default);
 		foreach ($this->data as $tag => $content) $this->view->assign($tag, $content);
 		return $this->view->loadTemplate();
