@@ -1,0 +1,10 @@
+{
+	"manifestVersion": 1,
+	"name": "ModuledPage",
+	"namespace": "ModuledPage",
+	"version": "1.0.0",
+	"description": "Composition of BASE3 web pages from page modules.",
+	"dependencies": {
+		"Base3Framework": ">=4.10.0"
+	}
+}
