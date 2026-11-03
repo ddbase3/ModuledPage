@@ -94,10 +94,7 @@ final class ModuledPageServiceTest extends TestCase {
 			['pagemodule', '', 'demoModule'],
 		]);
 
-		$schemaProvider = new class($schema) implements ISchemaProvider {
-			public function __construct(private array $schema) {}
-			public function getSchema(): array { return $this->schema; }
-		};
+		$schemaProvider = new ModuledPageServiceTestDouble1($schema);
 
 		$classmap = new ClassMapStub();
 		$classmap->registerInstance($schemaProvider, 'demoModule', [ISchemaProvider::class]);
@@ -107,3 +104,5 @@ final class ModuledPageServiceTest extends TestCase {
 		$this->assertSame(json_encode($schema), $service->getOutput('json'));
 	}
 }
+
+require_once __DIR__ . '/ModuledPageServiceTestDouble1.php';

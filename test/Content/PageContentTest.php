@@ -28,7 +28,7 @@ final class PageContentTest extends TestCase {
 			->method('setTemplate')
 			->with('Content/PageContent.php');
 
-		$view->expects(self::exactly(2))
+		$view->expects(self::exactly(3))
 			->method('assign')
 			->willReturnCallback(function (string $key, $value) use (&$assigned): void {
 				$assigned[$key] = $value;
@@ -45,6 +45,7 @@ final class PageContentTest extends TestCase {
 		self::assertSame([
 			'content' => '',
 			'background' => 'none',
+			'width' => 'frame',
 		], $assigned);
 	}
 
@@ -71,8 +72,8 @@ final class PageContentTest extends TestCase {
 			'extra' => 'value',
 		];
 
-		// 2 defaults + 3 data assignments
-		$view->expects(self::exactly(5))
+		// 3 defaults + 3 data assignments
+		$view->expects(self::exactly(6))
 			->method('assign')
 			->willReturnCallback(function (string $key, $value) use (&$assigned): void {
 				$assigned[$key] = $value;
@@ -91,19 +92,13 @@ final class PageContentTest extends TestCase {
 		self::assertSame([
 			'content' => '<p>Hello</p>',
 			'background' => 'blue',
+			'width' => 'frame',
 			'extra' => 'value',
 		], $assigned);
 	}
 
 	public function testGetSchemaReturnsExpectedJsonSchema(): void {
-		$view = new class implements \Base3\Api\IMvcView {
-			public function setPath(string $path = '.') {}
-			public function assign(string $key, $value) {}
-			public function setTemplate(string $template = 'default') {}
-			public function loadTemplate(): string { return ''; }
-			public function loadBricks(string $set, string $language = '') {}
-			public function getBricks(string $set): ?array { return null; }
-		};
+		$view = new PageContentTestDouble1();
 
 		$module = new PageContent($view);
 
@@ -120,3 +115,5 @@ final class PageContentTest extends TestCase {
 		self::assertSame(['content'], $schema['required'] ?? null);
 	}
 }
+
+require_once __DIR__ . '/PageContentTestDouble1.php';

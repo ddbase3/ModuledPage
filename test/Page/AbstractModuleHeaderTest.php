@@ -36,13 +36,4 @@ class AbstractModuleHeaderTest extends TestCase {
 	}
 }
 
-class TestHeaderModule extends AbstractModuleHeader {
-
-	public function getHtml() {
-		return '';
-	}
-
-	public function getPriority() {
-		return 0;
-	}
-}
+require_once __DIR__ . '/TestHeaderModule.php';

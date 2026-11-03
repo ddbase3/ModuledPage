@@ -67,14 +67,12 @@ final class MultilangPageModuleTest extends TestCase {
 	public function testGetPriorityReturns5(): void {
 		$configuration = new ConfigurationStub();
 
-		$language = new class implements ILanguage {
-			public function getLanguage(): string { return 'de'; }
-			public function setLanguage(string $language) {}
-			public function getLanguages(): array { return ['de']; }
-		};
+		$language = new MultilangPageModuleTestDouble1();
 
 		$module = new MultilangPageModule($configuration, $language);
 
 		self::assertSame(5, $module->getPriority());
 	}
 }
+
+require_once __DIR__ . '/MultilangPageModuleTestDouble1.php';

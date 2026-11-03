@@ -8,14 +8,7 @@ use PHPUnit\Framework\TestCase;
 final class ModernTeaserModuleTest extends TestCase {
 
 	public function testRequiresModuleReturnsEmptyArray(): void {
-		$view = new class implements \Base3\Api\IMvcView {
-			public function setPath(string $path = '.') {}
-			public function assign(string $key, $value) {}
-			public function setTemplate(string $template = 'default') {}
-			public function loadTemplate(): string { return ''; }
-			public function loadBricks(string $set, string $language = '') {}
-			public function getBricks(string $set): ?array { return null; }
-		};
+		$view = new ModernTeaserModuleTestDouble1();
 
 		$module = new ModernTeaserModule($view);
 
@@ -96,3 +89,5 @@ final class ModernTeaserModuleTest extends TestCase {
 		self::assertSame('ok', $module->getHtml());
 	}
 }
+
+require_once __DIR__ . '/ModernTeaserModuleTestDouble1.php';

@@ -36,13 +36,4 @@ class AbstractModuleFooterTest extends TestCase {
 	}
 }
 
-class TestFooterModule extends AbstractModuleFooter {
-
-	public function getHtml() {
-		return '';
-	}
-
-	public function getPriority() {
-		return 0;
-	}
-}
+require_once __DIR__ . '/TestFooterModule.php';

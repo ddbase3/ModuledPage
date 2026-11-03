@@ -78,12 +78,7 @@ final class ModuledPageRouteTest extends TestCase {
 	}
 
 	public function testDispatchSetsGlobalsIncludingDataAndReturnsCatchallOutput(): void {
-		$catchall = new class implements IPageCatchall {
-			public static function getName(): string { return 'catchall_stub'; }
-			public function getUrl() { return null; }
-			public function getHelp(): string { return ''; }
-			public function getOutput(string $out = 'html', bool $final = false): string { return 'OUT:' . $out; }
-		};
+		$catchall = new ModuledPageRouteTestDouble1();
 
 		$route = new ModuledPageRoute($this->createDummyClassMap([$catchall]));
 
@@ -111,3 +106,5 @@ final class ModuledPageRouteTest extends TestCase {
 		return $cm;
 	}
 }
+
+require_once __DIR__ . '/ModuledPageRouteTestDouble1.php';

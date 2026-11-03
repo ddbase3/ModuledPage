@@ -40,16 +40,5 @@ class AbstractModuleTest extends TestCase {
 	}
 }
 
-class TestModule extends AbstractModule {
-
-	public function getHtml() {
-		return '';
-	}
-}
-
-class AnotherModule extends AbstractModule {
-
-	public function getHtml() {
-		return '';
-	}
-}
+require_once __DIR__ . '/TestModule.php';
+require_once __DIR__ . '/AnotherModule.php';

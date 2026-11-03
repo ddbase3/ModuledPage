@@ -37,9 +37,12 @@ final class DisplayPageModuleTest extends TestCase {
 			])
 			->willReturn([]);
 
-		$view->expects(self::once())
+		$assigned = [];
+		$view->expects(self::exactly(2))
 			->method('assign')
-			->with('content', '');
+			->willReturnCallback(static function(string $name, mixed $value) use (&$assigned): void {
+				$assigned[$name] = $value;
+			});
 
 		$view->expects(self::once())
 			->method('loadTemplate')
@@ -47,6 +50,7 @@ final class DisplayPageModuleTest extends TestCase {
 
 		$module = new DisplayPageModule($view, $classmap);
 		self::assertSame('rendered', $module->getHtml());
+		self::assertSame(['content' => '', 'width' => 'frame'], $assigned);
 	}
 
 	public function testGetHtmlAssignsEmptyContentWhenNoDisplayFoundEvenIfNameGiven(): void {
@@ -65,9 +69,12 @@ final class DisplayPageModuleTest extends TestCase {
 			])
 			->willReturn([]);
 
-		$view->expects(self::once())
+		$assigned = [];
+		$view->expects(self::exactly(2))
 			->method('assign')
-			->with('content', '');
+			->willReturnCallback(static function(string $name, mixed $value) use (&$assigned): void {
+				$assigned[$name] = $value;
+			});
 
 		$view->method('setPath');
 		$view->method('setTemplate');
@@ -80,6 +87,7 @@ final class DisplayPageModuleTest extends TestCase {
 		]);
 
 		self::assertSame('ok', $module->getHtml());
+		self::assertSame(['content' => '', 'width' => 'frame'], $assigned);
 	}
 
 	public function testGetHtmlRendersDisplayOutputAndPassesData(): void {
@@ -115,9 +123,12 @@ final class DisplayPageModuleTest extends TestCase {
 			->method('getOutput')
 			->willReturn('DISPLAY-OUTPUT');
 
-		$view->expects(self::once())
+		$assigned = [];
+		$view->expects(self::exactly(2))
 			->method('assign')
-			->with('content', 'DISPLAY-OUTPUT');
+			->willReturnCallback(static function(string $name, mixed $value) use (&$assigned): void {
+				$assigned[$name] = $value;
+			});
 
 		$view->expects(self::once())
 			->method('loadTemplate')
@@ -130,6 +141,7 @@ final class DisplayPageModuleTest extends TestCase {
 		]);
 
 		self::assertSame('rendered-page', $module->getHtml());
+		self::assertSame(['content' => 'DISPLAY-OUTPUT', 'width' => 'frame'], $assigned);
 	}
 
 	public function testGetHtmlIgnoresNonDisplayInstances(): void {
@@ -146,9 +158,12 @@ final class DisplayPageModuleTest extends TestCase {
 			->method('getInstances')
 			->willReturn([$notADisplay]);
 
-		$view->expects(self::once())
+		$assigned = [];
+		$view->expects(self::exactly(2))
 			->method('assign')
-			->with('content', '');
+			->willReturnCallback(static function(string $name, mixed $value) use (&$assigned): void {
+				$assigned[$name] = $value;
+			});
 
 		$view->method('setPath');
 		$view->method('setTemplate');
@@ -161,5 +176,6 @@ final class DisplayPageModuleTest extends TestCase {
 		]);
 
 		self::assertSame('ok', $module->getHtml());
+		self::assertSame(['content' => '', 'width' => 'frame'], $assigned);
 	}
 }
