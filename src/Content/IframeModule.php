@@ -1,9 +1,23 @@
 <?php declare(strict_types=1);
 
-namespace ModuledPage\Content;
+/***********************************************************************
+ * This file is part of ModuledPage for BASE3 Framework.
+ *
+ * ModuledPage composes BASE3 web pages from reusable page modules.
+ * It combines module content using framework display and view contracts.
+ * Page composition remains independent of individual host applications.
+ *
+ * Developed by Daniel Dahme
+ * Licensed under GPL-3.0
+ * https://www.gnu.org/licenses/gpl-3.0.en.html
+ *
+ * https://base3.de
+ **********************************************************************/
 
-use Base3\Api\IMvcView;
-use ModuledPage\Page\AbstractModuleContent;
+namespace Base3\ModuledPage\Content;
+
+use Base3\CoreFoundation\Api\IMvcView;
+use Base3\ModuledPage\Page\AbstractModuleContent;
 
 class IframeModule extends AbstractModuleContent {
 

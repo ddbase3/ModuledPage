@@ -1,17 +1,31 @@
 <?php declare(strict_types=1);
 
-namespace Test\ModuledPage;
+/***********************************************************************
+ * This file is part of ModuledPage for BASE3 Framework.
+ *
+ * ModuledPage composes BASE3 web pages from reusable page modules.
+ * It combines module content using framework display and view contracts.
+ * Page composition remains independent of individual host applications.
+ *
+ * Developed by Daniel Dahme
+ * Licensed under GPL-3.0
+ * https://www.gnu.org/licenses/gpl-3.0.en.html
+ *
+ * https://base3.de
+ **********************************************************************/
 
-use Base3\Api\IContainer;
-use Base3\Api\IMvcView;
-use Base3\Language\Api\ILanguage;
+namespace Base3\ModuledPage\Test;
+
+use Base3\CoreFoundation\Api\IContainer;
+use Base3\CoreFoundation\Api\IMvcView;
+use Base3\CoreFoundation\Language\Api\ILanguage;
 use Base3\Test\Language\LanguageStub;
-use ModuledPage\ModuledPagePlugin;
+use Base3\ModuledPage\ModuledPagePlugin;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \ModuledPage\ModuledPagePlugin
+ * @covers \Base3\ModuledPage\ModuledPagePlugin
  */
 #[AllowMockObjectsWithoutExpectations]
 final class ModuledPagePluginTest extends TestCase {

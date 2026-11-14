@@ -1,12 +1,26 @@
 <?php declare(strict_types=1);
 
-namespace ModuledPage\Page;
+/***********************************************************************
+ * This file is part of ModuledPage for BASE3 Framework.
+ *
+ * ModuledPage composes BASE3 web pages from reusable page modules.
+ * It combines module content using framework display and view contracts.
+ * Page composition remains independent of individual host applications.
+ *
+ * Developed by Daniel Dahme
+ * Licensed under GPL-3.0
+ * https://www.gnu.org/licenses/gpl-3.0.en.html
+ *
+ * https://base3.de
+ **********************************************************************/
 
-use Base3\Api\IClassMap;
-use Base3\Api\IMvcView;
+namespace Base3\ModuledPage\Page;
+
+use Base3\CoreFoundation\Api\IClassMap;
+use Base3\CoreFoundation\Api\IMvcView;
 use Base3\Core\ServiceLocator;
-use Base3\Language\Api\ILanguage;
-use Base3\Page\Api\IPage;
+use Base3\CoreFoundation\Language\Api\ILanguage;
+use Base3\CoreFoundation\Page\Api\IPage;
 
 abstract class AbstractModuledPage implements IPage {
 
@@ -116,12 +130,12 @@ abstract class AbstractModuledPage implements IPage {
 	}
 
 	private function checkDependencies($o) {
-		if ($o instanceof \Base3\Page\Api\IPageModuleDependent) {
+		if ($o instanceof \Base3\CoreFoundation\Page\Api\IPageModuleDependent) {
 			$reqMods = $o->getRequiredModules();
 			foreach ($reqMods as $reqMod) {
 				foreach ($this->pageheaders as $h) if ($reqMod == $h->getName()) continue;
 				// $this->addHeader($this->servicelocator->get($reqMod));
-				$instance = $this->classmap->getInstanceByInterfaceName(\Base3\Page\Api\IPageModuleHeader::class, $reqMod);
+				$instance = $this->classmap->getInstanceByInterfaceName(\Base3\CoreFoundation\Page\Api\IPageModuleHeader::class, $reqMod);
 				$this->addHeader($instance);
 			}
 		}

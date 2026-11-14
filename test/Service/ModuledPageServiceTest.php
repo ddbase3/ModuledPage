@@ -1,17 +1,31 @@
 <?php declare(strict_types=1);
 
-namespace Test\ModuledPage\Service;
+/***********************************************************************
+ * This file is part of ModuledPage for BASE3 Framework.
+ *
+ * ModuledPage composes BASE3 web pages from reusable page modules.
+ * It combines module content using framework display and view contracts.
+ * Page composition remains independent of individual host applications.
+ *
+ * Developed by Daniel Dahme
+ * Licensed under GPL-3.0
+ * https://www.gnu.org/licenses/gpl-3.0.en.html
+ *
+ * https://base3.de
+ **********************************************************************/
 
-use Base3\Api\IClassMap;
-use Base3\Api\IRequest;
-use Base3\Api\ISchemaProvider;
+namespace Base3\ModuledPage\Test\Service;
+
+use Base3\CoreFoundation\Api\IClassMap;
+use Base3\CoreFoundation\Api\IRequest;
+use Base3\CoreFoundation\Api\ISchemaProvider;
 use Base3\Test\Core\ClassMapStub;
-use ModuledPage\Service\ModuledPageService;
+use Base3\ModuledPage\Service\ModuledPageService;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \ModuledPage\Service\ModuledPageService
+ * @covers \Base3\ModuledPage\Service\ModuledPageService
  */
 #[AllowMockObjectsWithoutExpectations]
 final class ModuledPageServiceTest extends TestCase {
