@@ -2,10 +2,19 @@
 	"manifestVersion": 1,
 	"name": "ModuledPage",
 	"namespace": "Base3\\ModuledPage",
-	"version": "1.0.0",
+	"version": "5.0.0",
 	"description": "Composition of BASE3 web pages from page modules.",
+	"license": "GPL-3.0-or-later",
+	"maintainers": [
+		{
+			"name": "Daniel Dahme",
+			"url": "https://www.base3.de",
+			"email": "info@base3.de"
+		}
+	],
+	"repository": "https://github.com/ddbase3/ModuledPage",
 	"dependencies": {
-		"Core": ">=4.10.0",
-		"CoreFoundation": ">=4.10.0"
+		"Core": ">=5.0.0",
+		"CoreFoundation": ">=5.0.0"
 	}
 }
